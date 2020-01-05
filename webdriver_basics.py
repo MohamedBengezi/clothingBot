@@ -44,7 +44,7 @@ def gecko_test(site_000='https://shop.misha-and-puff.com/products/house-sweater?
 
     checkout = driver.find_element_by_xpath("//a[@href='/checkout']")
     checkout.send_keys(webdriver.common.keys.Keys.RETURN)
-    sleep(4)
+    sleep(6)
 
     email = driver.find_element_by_id("checkout_email")
     email.send_keys('hanin68@gmail.com')
@@ -58,11 +58,11 @@ def gecko_test(site_000='https://shop.misha-and-puff.com/products/house-sweater?
 
     address = driver.find_element_by_id(
         "checkout_shipping_address_address1")
-    address.send_keys('6818 137th Avenue Northeast')
+    address.send_keys('6818 137th Ave NE')
 
     aprtment = driver.find_element_by_id(
         "checkout_shipping_address_address2")
-    aprtment.send_keys('437')
+    aprtment.send_keys('Unit 437')
 
     city = driver.find_element_by_id(
         "checkout_shipping_address_city")
