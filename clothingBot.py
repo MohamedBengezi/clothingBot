@@ -57,23 +57,26 @@ def clickButton():
 
 
 def inputPayment():
-    cardNum = driver.find_element_by_tag_name("iframe")
-    cardNum.send_keys('9055311442')
-    driver.switch_to.frame()
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.frame_to_be_available_and_switch_to_it(
+        (By.CLASS_NAME, "card-fields-iframe")))
 
-    # cardNumber = driver.find_element_by_id("number")
-    # cardNumber.send_keys('9055311442')
+    cardNumber = driver.find_element_by_id("number")
+    cardNumber.send_keys('493')
 
-    # name = driver.find_element_by_id("name")
-    # name.send_keys('9055311442')
+    name = driver.find_element_by_id("name")
+    action = webdriver.common.action_chains.ActionChains(driver)
+    action.move_to_element_with_offset(name, 5, 5)
+    action.click()
+    action.send_keys_to_element(name, 'meeee')
 
-    # expiry = driver.find_element_by_id("expiry")
-    # expiry.send_keys('9055311442')
+    expiry = driver.find_element_by_id("expiry")
+    expiry.send_keys('04 / 34')
 
-    # verification_value = driver.find_element_by_id("verification_value")
-    # verification_value.send_keys('9055311442')
+    verification_value = driver.find_element_by_id("verification_value")
+    verification_value.send_keys('123')
 
-    # driver.switch_to.default_content()
+    driver.switch_to.default_content()
 
 
 def shippingDetails():
