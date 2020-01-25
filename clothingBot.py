@@ -1,31 +1,15 @@
+import sys
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+site_000 = 'https://shop.misha-and-puff.com/collections/sale'
 
 
-def gecko_test(site_000='https://shop.misha-and-puff.com/products/house-sweater?variant=17828310024243&oi=0'):
-    """
-    simple overview:
-        1) set up webdriver
-        2) load this article 
-        3) close up shop 
-
-    input:
-        >> site_000
-            > default: url of this article
-    """
-    # # set the driver
-    driver = webdriver.Firefox()
-
-    # # load this article
-    driver.get(site_000)
-    # # and chill a bit
-    # sleep(1)
-    # elem = driver.find_element_by_link_text('House Sweater')
-    # print(elem)
-    # elem.send_keys(webdriver.common.keys.Keys.RETURN)
-    sleep(2)
-
+def selectSize():
     select = driver.find_element_by_xpath(
         "//select[@data-product-option='option2']")
     all_options = select.find_elements_by_tag_name("option")
@@ -35,17 +19,64 @@ def gecko_test(site_000='https://shop.misha-and-puff.com/products/house-sweater?
             print("Value is: %s" % value)
             option.click()
 
-    # select by visible text
-    # select.select_by_visible_text('4-5 y')
 
+def addToCart():
     addToCart = driver.find_element_by_xpath("//input[@value='Add to cart']")
-    addToCart.send_keys(webdriver.common.keys.Keys.RETURN)
+
+    try:
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "add-to-cart"))
+        )
+    except:
+        print("timed out waiting for product page")
+
+    try:
+        addToCart.send_keys(webdriver.common.keys.Keys.RETURN)
+    except:
+        try:
+            addToCart.click()
+        except:
+            print("Could not click 'Add to cart'")
     sleep(2)
 
     checkout = driver.find_element_by_xpath("//a[@href='/checkout']")
     checkout.send_keys(webdriver.common.keys.Keys.RETURN)
-    sleep(6)
 
+
+def findItem(prodName):
+    elem = driver.find_element_by_xpath('//img[contains(@alt,"'+prodName+'")]')
+    action = webdriver.common.action_chains.ActionChains(driver)
+    action.move_to_element_with_offset(elem, 5, 5)
+    action.click()
+    action.perform()
+
+
+def clickButton():
+    cont = driver.find_element_by_name("button")
+    cont.send_keys(webdriver.common.keys.Keys.RETURN)
+
+
+def inputPayment():
+    cardNum = driver.find_element_by_tag_name("iframe")
+    cardNum.send_keys('9055311442')
+    driver.switch_to.frame()
+
+    # cardNumber = driver.find_element_by_id("number")
+    # cardNumber.send_keys('9055311442')
+
+    # name = driver.find_element_by_id("name")
+    # name.send_keys('9055311442')
+
+    # expiry = driver.find_element_by_id("expiry")
+    # expiry.send_keys('9055311442')
+
+    # verification_value = driver.find_element_by_id("verification_value")
+    # verification_value.send_keys('9055311442')
+
+    # driver.switch_to.default_content()
+
+
+def shippingDetails():
     email = driver.find_element_by_id("checkout_email")
     email.send_keys('hanin68@gmail.com')
 
@@ -96,50 +127,22 @@ def gecko_test(site_000='https://shop.misha-and-puff.com/products/house-sweater?
     phone = driver.find_element_by_id("checkout_shipping_address_phone")
     phone.send_keys('9055311442')
 
-    button = driver.find_element_by_xpath("//button[@name='button']")
-    button.send_keys(webdriver.common.keys.Keys.RETURN)
 
-    sleep(1)
-
-    try:
-        proceed = driver.find_element_by_id("btn-proceed-address")
-        proceed.send_keys(webdriver.common.keys.Keys.RETURN)
-    except:
-        print("Couldn't locate proceed button")
-
-    sleep(2.5)
-
-    cont = driver.find_element_by_name("button")
-    cont.send_keys(webdriver.common.keys.Keys.RETURN)
-
-    sleep(2.5)
-
-    cardNumber = driver.find_element_by_id("number")
-    cardNumber.send_keys('9055311442')
-
-    name = driver.find_element_by_id("name")
-    name.send_keys('9055311442')
-
-    expiry = driver.find_element_by_id("expiry")
-    expiry.send_keys('9055311442')
-
-    verification_value = driver.find_element_by_id("verification_value")
-    verification_value.send_keys('9055311442')
-
-    # driver.find_element_by_xpath("//input[@id='checkout_shipping_address_first_name']")
-    # checkout_shipping_address_first_name
-    # checkout_shipping_address_last_name
-    # checkout_shipping_address_address1
-    # checkout_shipping_address_city
-    # select checkout_shipping_address_country
-    # select checkout_shipping_address_province
-    # checkout_shipping_address_zip
-    # checkout_shipping_address_phone
-    # button continue_to_shipping_method_button
-
-    # k, cool. let's bounce.
-  #  driver.quit()
-# make runable
 if __name__ == '__main__':
-    # here we go
-    gecko_test()
+    # setting the site and driver
+    driver = webdriver.Firefox()
+    # load the site
+    driver.get(site_000)
+    prodName = sys.argv[1]
+    sleep(1)
+    findItem(prodName)
+    sleep(2)
+    selectSize()
+    addToCart()
+    sleep(6)
+    shippingDetails()
+    clickButton()
+    sleep(4.5)
+    clickButton()
+    sleep(7)
+    inputPayment()
