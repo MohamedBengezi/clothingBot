@@ -12,14 +12,17 @@ site_000 = 'https://shop.misha-and-puff.com/collections/sale'
 
 
 def selectSize():
-    select = driver.find_element_by_xpath(
-        "//select[@data-product-option='option2']")
-    all_options = select.find_elements_by_tag_name("option")
-    for option in all_options:
-        value = option.get_attribute("value")
-        if value == "4-5y":
-            print("Value is: %s" % value)
-            option.click()
+    try:
+        select = driver.find_element_by_xpath(
+            "//select[@data-product-option='option2']")
+        all_options = select.find_elements_by_tag_name("option")
+        for option in all_options:
+            value = option.get_attribute("value")
+            if value == "4-5y":
+                print("Value is: %s" % value)
+                option.click()
+    except:
+        print('No select found')
 
 
 def addToCart():
