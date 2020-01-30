@@ -5,6 +5,8 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
+
 
 site_000 = 'https://shop.misha-and-puff.com/collections/sale'
 
@@ -15,7 +17,7 @@ def selectSize():
     all_options = select.find_elements_by_tag_name("option")
     for option in all_options:
         value = option.get_attribute("value")
-        if value == "4-5 y":
+        if value == "4-5y":
             print("Value is: %s" % value)
             option.click()
 
@@ -65,10 +67,8 @@ def inputPayment():
     cardNumber.send_keys('493')
 
     name = driver.find_element_by_id("name")
-    action = webdriver.common.action_chains.ActionChains(driver)
-    action.move_to_element_with_offset(name, 5, 5)
-    action.click()
-    action.send_keys_to_element(name, 'meeee')
+    wait.until(EC.element_to_be_clickable((By.ID, "name")))
+    name.click()
 
     expiry = driver.find_element_by_id("expiry")
     expiry.send_keys('04 / 34')
@@ -135,11 +135,11 @@ if __name__ == '__main__':
     # setting the site and driver
     driver = webdriver.Firefox()
     # load the site
-    driver.get(site_000)
-    prodName = sys.argv[1]
-    sleep(1)
-    findItem(prodName)
-    sleep(2)
+    URL = sys.argv[1]
+    driver.get(URL)
+    # sleep(1)
+    # findItem(prodName)
+    sleep(3)
     selectSize()
     addToCart()
     sleep(6)
