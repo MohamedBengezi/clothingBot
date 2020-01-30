@@ -142,7 +142,7 @@ if __name__ == '__main__':
     driver.get(URL)
     # sleep(1)
     # findItem(prodName)
-    sleep(3)
+    sleep(1)
     selectSize()
     addToCart()
     sleep(6)
