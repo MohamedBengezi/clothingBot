@@ -15,5 +15,6 @@ A python/selenium script designed to purchase a specified product from certain S
 
 ## Usage
 - Replace the URL and product name in script with the desired ones
+- create a JSON file with email, firstName, lastName, address, apartment (if applicable), city, state (only the state code e.g. WA), zipcode, and phone. These will be used for the shipping details
 - Run `python .\clothingBot.py`
 
