@@ -1,4 +1,5 @@
 import sys
+import json
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
@@ -9,25 +10,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 
 site_000 = 'https://apolina-kids.com/collections/all'
-
-
-if __name__ == '__main__':
-    # setting the site and driver
-    driver = webdriver.Firefox()
-    # load the site
-    URL = site_000
-    driver.get(URL)
-    sleep(1)
-    findItem('POL DRESS - FARM CHECK / HAY')
-    sleep(1)
-    selectSize()
-    addToCart()
-    sleep(3)
-    shippingDetails()
-    clickButton(None)
-    sleep(2.5)
-    clickButton(None)
-    sleep(3)
 
 
 def findItem(prodName):
@@ -82,27 +64,29 @@ def clickButton(id):
 
 
 def shippingDetails():
+    with open('info.json') as f:
+        data = json.load(f)
     email = driver.find_element_by_id("checkout_email")
-    email.send_keys('hanin68@gmail.com')
+    email.send_keys(data['email'])
 
     firstName = driver.find_element_by_id(
         "checkout_shipping_address_first_name")
-    firstName.send_keys('Hanin')
+    firstName.send_keys(data['firstName'])
 
     lastName = driver.find_element_by_id("checkout_shipping_address_last_name")
-    lastName.send_keys('Bengezi')
+    lastName.send_keys(data['lastName'])
 
     address = driver.find_element_by_id(
         "checkout_shipping_address_address1")
-    address.send_keys('6818 137th Ave NE')
+    address.send_keys(data['address'])
 
     aprtment = driver.find_element_by_id(
         "checkout_shipping_address_address2")
-    aprtment.send_keys('Unit 437')
+    aprtment.send_keys(data['apartment'])
 
     city = driver.find_element_by_id(
         "checkout_shipping_address_city")
-    city.send_keys('Redmond')
+    city.send_keys(data['city'])
 
     country = driver.find_element_by_id(
         "checkout_shipping_address_country")
@@ -110,7 +94,6 @@ def shippingDetails():
     for option in all_options:
         value = option.get_attribute("value")
         if value == "United States":
-            print("Value is: %s" % value)
             option.click()
             break
 
@@ -120,17 +103,17 @@ def shippingDetails():
     for states in state_options:
         value1 = states.get_attribute("value")
         print("Value1 is: %s" % value1)
-        if value1 == "WA":
+        if value1 == data['state']:
             print("Value is: %s" % value1)
             states.click()
             break
 
     zipcode = driver.find_element_by_id(
         "checkout_shipping_address_zip")
-    zipcode.send_keys('98052')
+    zipcode.send_keys(data['zipcode'])
 
     phone = driver.find_element_by_id("checkout_shipping_address_phone")
-    phone.send_keys('9055311442')
+    phone.send_keys(data['phone'])
 
 
 # def inputPayment():
@@ -167,3 +150,22 @@ def shippingDetails():
     # sleep(10)
 
     # driver.switch_to.default_content()
+
+
+if __name__ == '__main__':
+    # setting the site and driver
+    driver = webdriver.Firefox()
+    # load the site
+    URL = site_000
+    driver.get(URL)
+    sleep(1)
+    findItem('POL DRESS - FARM CHECK / HAY')
+    sleep(1)
+    selectSize()
+    addToCart()
+    sleep(3)
+    shippingDetails()
+    clickButton(None)
+    sleep(2.5)
+    clickButton(None)
+    sleep(3)
