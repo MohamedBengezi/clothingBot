@@ -80,9 +80,12 @@ def shippingDetails():
         "checkout_shipping_address_address1")
     address.send_keys(data['address'])
 
-    aprtment = driver.find_element_by_id(
-        "checkout_shipping_address_address2")
-    aprtment.send_keys(data['apartment'])
+    try:
+        aprtment = driver.find_element_by_id(
+            "checkout_shipping_address_address2")
+        aprtment.send_keys(data['apartment'])
+    except:
+        print('Not an apartment')
 
     city = driver.find_element_by_id(
         "checkout_shipping_address_city")
