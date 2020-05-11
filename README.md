@@ -1,5 +1,7 @@
 # clothingBot
 
+## Description
+A python/selenium script designed to purchase a specified product from certain Shopify based webstores. Originally designed for Misha & Puff as well as Apolina-kids
 
 ## Requirements
 - python 3.6
@@ -12,6 +14,6 @@
 
 
 ## Usage
-- Run `python .\clothingBot.py "URL"`
-- URL =  "https://shop.misha-and-puff.com/collections/preorder-dusty-rose-confetti/products/popcorn-sweater-dusty-rose-confetti"
-and URL = "https://shop.misha-and-puff.com/collections/preorder-dusty-rose-confetti/products/popcorn-sweater-dusty-rose-confetti"
+- Replace the URL and product name in script with the desired ones
+- Run `python .\clothingBot.py`
+
